@@ -21,6 +21,7 @@ const router = createRouter({
       name: 'register',
       component: RegisterView
     },
+    // Agrega aquí las rutas para About, Classes y Contact si las necesitas
   ]
 })
 

@@ -80,7 +80,7 @@ const navigateTo = (route) => {
 }
 
 .menu a:hover {
-  color: #00ff40; /* Verde fluorescente */
+  color: #bdc445; /* Verde fluorescente 00ff40 */
   text-shadow: none;
   background: transparent;
   box-shadow: none;
@@ -127,7 +127,7 @@ const navigateTo = (route) => {
 }
 
 .language-selector .active {
-  color: #00ff40;
+  color: #bdc445;
   font-weight: 500;
 }
 

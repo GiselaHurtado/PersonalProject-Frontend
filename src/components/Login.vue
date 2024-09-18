@@ -49,6 +49,7 @@ const goToSignup = () => {
   
   h2 {
     text-align: center;
+    font-family: 'Quicksand', sans-serif;
     margin-bottom: 1.5rem;
   }
   
@@ -59,6 +60,7 @@ const goToSignup = () => {
   
   input {
     margin-bottom: 1rem;
+    font-family: 'Quicksand', sans-serif;
     padding: 0.5rem;
     border: none;
     border-radius: 4px;
@@ -73,16 +75,17 @@ const goToSignup = () => {
   }
   
   a {
-    color: #ffff00;
+    color: #bdc445;
     text-decoration: none;
     font-size: 0.8rem;
   }
   
   button {
     padding: 0.5rem;
+    font-family: 'Quicksand', sans-serif;
     border: none;
     border-radius: 4px;
-    background-color: #ffff00;
+    background-color: #bdc445;
     color: #333;
     cursor: pointer;
     font-weight: bold;
