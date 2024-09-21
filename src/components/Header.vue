@@ -25,7 +25,7 @@ const navigateTo = (route) => {
     <div class="menu">
       <a @click="navigateTo('/')">HOME</a>
       <a @click="navigateTo('/about')">ABOUT ME</a>
-      <a @click="navigateTo('/classes')">PRIVATE CLASSES</a>
+      <a @click="navigateTo('/services')">SERVICES</a>
       <a @click="navigateTo('/contact')">CONTACT ME</a>
     </div>
     <div class="right-section">

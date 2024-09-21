@@ -4,7 +4,7 @@ import { ref, onMounted } from 'vue';
 const images = ref([]);
 
 onMounted(async () => {
-  const imageModules = import.meta.glob('@/assets/images/*.{jpg,jpeg,png,gif}');
+  const imageModules = import.meta.glob('../assets/images/homeview/*.{jpg,jpeg,png,gif}');
   for (const path in imageModules) {
     const mod = await imageModules[path]();
     images.value.push(mod.default);
