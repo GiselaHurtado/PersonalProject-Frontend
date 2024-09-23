@@ -1,41 +1,45 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useAuthStore } from '@/stores/auth';
+import axios from 'axios';
+import { useAuthStore } from '@/stores/auth'; // Asegúrate de que la ruta sea correcta
 
 const username = ref('');
 const password = ref('');
+const error = ref('');
 const router = useRouter();
 const authStore = useAuthStore();
 
 const handleLogin = async () => {
   try {
-    await authStore.login(username.value, password.value);
-    router.push('/');
-  } catch (error) {
-    console.error('Login failed:', error);
+    const encodedCredentials = btoa(`${username.value}:${password.value}`);
+    const response = await axios.get('http://localhost:8080/api/v1/login', {
+      headers: {
+        'Authorization': `Basic ${encodedCredentials}`
+      }
+    });
+    
+    console.log('Login successful:', response.data);
+    authStore.setUser(response.data);
+    router.push('/dashboard'); // O a donde quieras redirigir después del login
+  } catch (err) {
+    console.error('Login error:', err);
+    error.value = 'Invalid credentials. Please try again.';
   }
-};
-
-const goToSignup = () => {
-  router.push('/register');
 };
 </script>
 
 <template>
   <div class="login-container">
-    <h2>SIGN IN</h2>
+    <h2>Login</h2>
     <form @submit.prevent="handleLogin">
       <input v-model="username" type="text" placeholder="Username" required>
       <input v-model="password" type="password" placeholder="Password" required>
-      <div class="links">
-        <a href="#" @click.prevent="goToSignup">Signup</a>
-      </div>
       <button type="submit">Login</button>
     </form>
+    <p v-if="error" class="error-message">{{ error }}</p>
   </div>
 </template>
-
 
   <style scoped>
   .login-container {
@@ -94,5 +98,9 @@ const goToSignup = () => {
   button:hover {
     background-color: #e6e600;
   }
+  .error-message {
+  color: red;
+  margin-top: 10px;
+}
   </style>
 

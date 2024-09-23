@@ -1,47 +1,40 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useAuthStore } from '@/stores/auth';
+import axios from 'axios';
 
 const username = ref('');
 const email = ref('');
 const password = ref('');
-const confirmPassword = ref('');
+const error = ref('');
 const router = useRouter();
-const authStore = useAuthStore();
 
-const handleRegistration = async () => {
-  if (password.value !== confirmPassword.value) {
-    console.error('Passwords do not match');
-    return;
-  }
-
+const handleRegister = async () => {
   try {
-    await authStore.register(username.value, email.value, password.value);
-    router.push('/');
-  } catch (error) {
-    console.error('Registration failed:', error);
+    const response = await axios.post('http://localhost:8080/api/v1/register', {
+      username: username.value,
+      email: email.value,
+      password: password.value
+    });
+    console.log('Registration successful:', response.data);
+    router.push('/login');
+  } catch (err) {
+    console.error('Registration error:', err);
+    error.value = err.response?.data || 'Registration failed. Please try again.';
   }
-};
-
-const goToLogin = () => {
-  router.push('/login');
 };
 </script>
 
 <template>
   <div class="register-container">
     <h2>SIGN UP</h2>
-    <form @submit.prevent="handleRegistration">
-      <input v-model="username" type="text" placeholder="Username" required>
-      <input v-model="email" type="email" placeholder="Email" required>
-      <input v-model="password" type="password" placeholder="Password" required>
-      <input v-model="confirmPassword" type="password" placeholder="Confirm Password" required>
-      <div class="links">
-        <a href="#" @click.prevent="goToLogin">Already have an account? Login</a>
-      </div>
+    <form @submit.prevent="handleRegister">
+      <input v-model="username" type="text" placeholder="Username" required autocomplete="username">
+      <input v-model="email" type="email" placeholder="Email" required autocomplete="email">
+      <input v-model="password" type="password" placeholder="Password" required autocomplete="new-password">
       <button type="submit">Register</button>
     </form>
+    <p v-if="error" class="error-message">{{ error }}</p>
   </div>
 </template>
 <style scoped>
@@ -49,6 +42,7 @@ const goToLogin = () => {
   background-color: #333;
   color: #fff;
   padding: 2rem;
+  justify-content:center;
   border-radius: 8px;
   width: 300px;
   margin: auto;
@@ -63,6 +57,7 @@ h2 {
 form {
   display: flex;
   flex-direction: column;
+  
 }
 
 input {
@@ -100,5 +95,9 @@ button {
 
 button:hover {
   background-color: #e6e600;
+}
+.error-message {
+  color: red;
+  margin-top: 10px;
 }
 </style>
