@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import axios from 'axios';
+import api from './api.js';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -12,19 +12,34 @@ export const useAuthStore = defineStore('auth', {
     setUser(userData) {
       this.user = userData;
       localStorage.setItem('user', JSON.stringify(userData));
+      api.defaults.headers.common['Authorization'] = `Basic ${btoa(`${userData.username}:${userData.password}`)}`;
     },
     logout() {
       this.user = null;
       localStorage.removeItem('user');
-      delete axios.defaults.headers.common['Authorization'];
+      delete api.defaults.headers.common['Authorization'];
     },
-    initializeAuth() {
-      const userData = JSON.parse(localStorage.getItem('user'));
-      if (userData) {
-        this.user = userData;
-        const encodedCredentials = btoa(`${userData.username}:${userData.password}`);
-        axios.defaults.headers.common['Authorization'] = `Basic ${encodedCredentials}`;
+    async login(username, password) {
+      try {
+        const credentials = btoa(`${username}:${password}`);
+        const response = await api.post('/login', {}, {
+          headers: { 'Authorization': `Basic ${credentials}` }
+        });
+        this.setUser({ username, password, ...response.data });
+        return response.data;
+      } catch (error) {
+        console.error('Login error:', error);
+        throw error;
       }
     },
+
+    initializeAuth() {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        this.user = JSON.parse(storedUser);
+        const { username, password } = this.user;
+        api.defaults.headers.common['Authorization'] = `Basic ${btoa(`${username}:${password}`)}`;
+      }
+    }
   },
 });

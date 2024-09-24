@@ -33,9 +33,13 @@ onMounted(async () => {
 }
 
 .image-container {
-  width: 450%;
-  max-width: 2000px; /* Ajusta este valor según prefieras */
-  margin: 0 auto;
+  position: center;
+  margin-left: 0%;
+  margin-right: 0%;
+  top: 0;
+  left: 0;
+  width: 20%;
+  height: 20%;
 }
 
 .image-container img {

@@ -5,6 +5,9 @@ import Login from '@/views/LoginView.vue';
 import Register from '@/views/RegisterView.vue';
 import Dashboard from '@/views/DashboardView.vue';
 import Appointment from '@/views/AppointmentView.vue';
+import Services from '@/components/Services.vue';
+import Contact from '@/components/Contact.vue'
+
 
 const routes = [
   {
@@ -23,17 +26,27 @@ const routes = [
     component: Register
   },
   {
+    path: '/services',
+    name: 'Services',
+    component: Services,
+  },
+  {
+    path: '/contact',
+    name: 'Contact',
+    component: Contact,
+  },
+  {
     path: '/dashboard',
     name: 'Dashboard',
     component: Dashboard,
-    meta: { requiresAuth: true }
+    // meta: { requiresAuth: true }
   },
   {
     path: '/appointment',
     name: 'Appointment',
     component: Appointment,
-    meta: { requiresAuth: true }
-  }
+    // meta: { requiresAuth: true }
+  },
 ];
 
 const router = createRouter({

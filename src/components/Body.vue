@@ -28,17 +28,21 @@ onMounted(async () => {
 }
 
 .image-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  position: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin-left: 0;
 }
 
 .image-container img {
-  width: 1200px;
-  height: 800px;
+  width: 100px;
+  height: 100px;
   object-fit: cover;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   margin-bottom: 20px;
+  margin-left: 0;
 }
 </style>
