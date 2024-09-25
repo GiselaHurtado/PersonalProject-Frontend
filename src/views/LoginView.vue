@@ -13,6 +13,11 @@ import Login from '@/components/Login.vue';
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: auto;
+  width: 100%;
+  margin-left: 0px;
+  margin-right: 0px;
+  background-color:#1a1a1a;
+
 }
 </style>

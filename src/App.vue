@@ -14,8 +14,8 @@ import Header from "./components/Header.vue";
 body, html {
   margin: 0;
   padding: 0;
-  width: 100%;
-  height: 100%;
+  /* width: 100%;
+  height: 100%; */
   background-color: #2f2f2f; /* Fondo gris oscuro */
 }
 
