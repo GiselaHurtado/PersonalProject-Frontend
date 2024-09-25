@@ -7,6 +7,8 @@ import Dashboard from '@/views/DashboardView.vue';
 import Appointment from '@/views/AppointmentView.vue';
 import Services from '@/components/Services.vue';
 import Contact from '@/components/Contact.vue'
+import About from '@/components/About.vue';
+
 
 
 const routes = [
@@ -14,6 +16,11 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: About
   },
   {
     path: '/login',
