@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "lib": ["esnext"],  // O especificar la versión de ES que necesitas, como "es2015", "es2020", etc.
     "paths": {
       "@/*": ["./src/*"]
     }

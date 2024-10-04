@@ -1,12 +1,27 @@
-<script setup>
-import Login from '@/components/Login.vue';
-</script>
-
 <template>
-  <div class="login-view">
-    <Login />
-  </div>
+  <AuthForm 
+    :isLoginMode="true" 
+    :onSubmit="handleLogin"
+  />
 </template>
+
+<script setup>
+import AuthForm from '@/components/AuthForm.vue';  // Asegúrate de que esta sea la ruta correcta
+import { useAuthStore } from '@/stores/auth.js'; 
+import { useRouter } from 'vue-router';
+
+const authStore = useAuthStore();
+const router = useRouter();
+
+const handleLogin = async (username, password) => {
+  try {
+    await authStore.login(username, password);
+    router.push('/dashboard');
+  } catch (error) {
+    console.error('Login error:', error.message);
+  }
+};
+</script>
 
 <style scoped>
 .login-view {
@@ -18,6 +33,5 @@ import Login from '@/components/Login.vue';
   margin-left: 0px;
   margin-right: 0px;
   background-color:#1a1a1a;
-
 }
 </style>

@@ -1,4 +1,4 @@
-<script setup>
+<!-- <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
@@ -100,4 +100,17 @@ button:hover {
   color: red;
   margin-top: 10px;
 }
+</style> -->
+
+<script setup>
+
+</script>
+
+<template>
+
+</template>
+
+<style scoped>
+
+
 </style>

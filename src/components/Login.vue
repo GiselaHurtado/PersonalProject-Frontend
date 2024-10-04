@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="auth-container">
     <div class="auth-card">
       <div v-if="isLoginView" class="auth-form">
@@ -220,4 +220,17 @@ input {
     margin-bottom: 1rem;
   }
 }
+</style> -->
+
+<script setup>
+
+</script>
+
+<template>
+
+</template>
+
+<style scoped>
+
+
 </style>

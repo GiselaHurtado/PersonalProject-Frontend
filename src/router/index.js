@@ -1,36 +1,34 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import Home from '@/views/HomeView.vue';
-import Login from '@/views/LoginView.vue';
-import Register from '@/views/RegisterView.vue';
 import Dashboard from '@/views/DashboardView.vue';
 import Appointment from '@/views/AppointmentView.vue';
 import Services from '@/components/Services.vue';
-import Contact from '@/components/Contact.vue'
+import Contact from '@/components/Contact.vue';
 import About from '@/components/About.vue';
-
-
+import LoginView from '@/views/LoginView.vue';  // Importa la vista de login
+import RegisterView from '@/views/RegisterView.vue';  // Importa la vista de registro
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
   },
   {
     path: '/about',
     name: 'About',
-    component: About
+    component: About,
   },
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: LoginView,  // Usa la vista de login
   },
   {
     path: '/register',
     name: 'Register',
-    component: Register
+    component: RegisterView,  // Usa la vista de registro
   },
   {
     path: '/services',
@@ -46,13 +44,11 @@ const routes = [
     path: '/dashboard',
     name: 'Dashboard',
     component: Dashboard,
-    // meta: { requiresAuth: true }
   },
   {
     path: '/appointment',
     name: 'Appointment',
     component: Appointment,
-    // meta: { requiresAuth: true }
   },
 ];
 
