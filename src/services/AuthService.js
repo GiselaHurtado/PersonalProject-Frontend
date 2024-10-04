@@ -28,13 +28,18 @@ class AuthService {
   }
 
   // Método para registro
-  async register(user) {
+  async register({ name, username, password }) {
     try {
       const response = await axios.post(
         `${this.apiUrl}/register`,
-        user, // Envía los datos del registro
+        {},  // El cuerpo de la solicitud queda vacío
         {
           headers: {
+            'username': username,
+            'password': password,
+            'email': name,  // Si necesitas enviar también email
+            'firstName': name,  // Si tienes un campo firstName
+            'lastName': 'LastNamePlaceholder',  // Si necesitas enviar lastName, cámbialo según tus necesidades
             'Content-Type': 'application/json',
           },
         }
@@ -47,3 +52,5 @@ class AuthService {
 }
 
 export default new AuthService();
+
+

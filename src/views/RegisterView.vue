@@ -8,18 +8,18 @@
 </template>
 
 <script setup>
-import AuthForm from '@/components/AuthForm.vue';  // Asegúrate de que la ruta sea correcta
-import { useAuthStore } from '@/stores/auth.js';  // Usa el store de autenticación
-import { useRouter } from 'vue-router';  // Usa el enrutador para redireccionar
+import AuthForm from '@/components/AuthForm.vue'; // Asegúrate de que esta ruta es correcta
+import { useAuthStore } from '@/stores/auth';  // Usa el store de autenticación
+import { useRouter } from 'vue-router';  // Usa el router para redirigir después del registro
 
 // Crea una instancia del store y del router
 const authStore = useAuthStore();
 const router = useRouter();
 
-// Función para manejar el registro
+// Función que maneja el proceso de registro
 const handleRegister = async (name, username, password) => {
   try {
-    // Llama al método `register` del store para registrar al usuario
+    // Llama al método register del store para registrar al usuario
     await authStore.register(name, username, password);
 
     // Redirige al login después de un registro exitoso
