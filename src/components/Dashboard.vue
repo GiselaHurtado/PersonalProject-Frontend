@@ -1,64 +1,81 @@
 <script setup>
-import { ref, computed } from 'vue';
-import axios from 'axios';
+import { ref, computed, onMounted } from 'vue';
+import { useUserStore } from '@/stores/users'; // Importa el store de usuarios
 import AddUserForm from './AddUserForm.vue';
 import EditUserForm from './EditUserForm.vue';
 import DeleteUserForm from './DeleteUserForm.vue';
 
-const tableData = ref([
-  { id: 1, name: 'Dakota Rice', email: 'dakota.rice@example.com' },
-  { id: 2, name: 'Minerva Hooper', email: 'minerva.hooper@example.com' },
-  { id: 3, name: 'Sage Rodriguez', email: 'sage.rodriguez@example.com' },
-  { id: 4, name: 'Philip Chaney', email: 'philip.chaney@example.com' },
-  { id: 5, name: 'Doris Greene', email: 'doris.greene@example.com' },
-  { id: 6, name: 'Mason Porter', email: 'mason.porter@example.com' },
-  { id: 7, name: 'Alden Chen', email: 'alden.chen@example.com' },
-  { id: 8, name: 'Colton Hodges', email: 'colton.hodges@example.com' }
-]);
+const userStore = useUserStore();  // Instancia del store de usuarios
+const username = ref('admin');  // Usuario correcto
+const password = ref('password');  // Contraseña correcta
 
+// Estado para manejar las búsquedas
 const searchQuery = ref('');
+
+// Computed para filtrar los usuarios con base en la búsqueda
 const filteredData = computed(() => {
-  return tableData.value.filter((item) =>
-    item.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+  return userStore.users.filter((user) =>
+    user.username.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
 });
 
+// Modal de usuario seleccionado
 const selectedUser = ref(null);
-const showAddForm = ref(false); // Estado para el modal de agregar
-const showEditForm = ref(false); // Estado para el modal de editar
-const showDeleteForm = ref(false); // Estado para el modal de eliminación
+const showAddForm = ref(false);  // Estado para el modal de agregar
+const showEditForm = ref(false);  // Estado para el modal de editar
+const showDeleteForm = ref(false);  // Estado para el modal de eliminación
 
-const handleAddUser = (newUser) => {
-  tableData.value.push(newUser);
-  showAddForm.value = false; // Ocultar modal de agregar
-};
+// Montar el componente y cargar los usuarios desde el backend
+onMounted(() => {
+  userStore.fetchUsers(username.value, password.value);  // Fetch de usuarios al montar
+});
 
-const handleEditUser = (updatedUser) => {
-  const index = tableData.value.findIndex(user => user.id === updatedUser.id);
-  if (index !== -1) {
-    tableData.value[index] = updatedUser;
+// Agregar nuevo usuario usando el store
+const handleAddUser = async (newUser) => {
+  try {
+    await userStore.addUser(newUser, username.value, password.value);  // Agregar usuario
+    showAddForm.value = false;  // Ocultar modal de agregar
+  } catch (error) {
+    console.error('Error al agregar usuario:', error);
   }
-  showEditForm.value = false; // Ocultar modal de editar
 };
 
-const handleDeleteUser = (userToDelete) => {
-  tableData.value = tableData.value.filter(user => user.id !== userToDelete.id);
-  showDeleteForm.value = false;
-  alert('Usuario eliminado correctamente');
+// Editar usuario usando el store
+const handleEditUser = async (updatedUser) => {
+  try {
+    await userStore.updateUser(updatedUser.id, updatedUser, username.value, password.value);  // Editar usuario
+    showEditForm.value = false;  // Ocultar modal de editar
+  } catch (error) {
+    console.error('Error al editar usuario:', error);
+  }
 };
 
+// Eliminar usuario usando el store
+const handleDeleteUser = async (userToDelete) => {
+  try {
+    await userStore.deleteUser(userToDelete.id, username.value, password.value);  // Eliminar usuario
+    showDeleteForm.value = false;
+    alert('Usuario eliminado correctamente');
+  } catch (error) {
+    console.error('Error al eliminar usuario:', error);
+  }
+};
+
+// Abrir el modal de editar usuario
 const editUser = (user) => {
-  selectedUser.value = user;
-  showEditForm.value = true; // Mostrar modal de editar
+  selectedUser.value = user;  // Almacenar el usuario seleccionado
+  showEditForm.value = true;  // Mostrar modal de editar
 };
 
+// Abrir el modal de eliminar usuario
 const deleteUser = (user) => {
   selectedUser.value = user;
-  showDeleteForm.value = true; // Mostrar modal de eliminar
+  showDeleteForm.value = true;  // Mostrar modal de eliminar
 };
 
+// Alternar la visibilidad del modal de agregar usuario
 const toggleAddForm = () => {
-  showAddForm.value = !showAddForm.value; // Alternar visibilidad del modal de agregar usuario
+  showAddForm.value = !showAddForm.value;
 };
 </script>
 
@@ -74,19 +91,19 @@ const toggleAddForm = () => {
         <thead>
           <tr>
             <th>User ID</th>
-            <th>Name</th>
+            <th>Username</th>
             <th>Email</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="row in filteredData" :key="row.id">
-            <td>{{ row.id }}</td>
-            <td>{{ row.name }}</td>
-            <td>{{ row.email }}</td>
+          <tr v-for="user in filteredData" :key="user.id">
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
             <td class="actions">
-              <button class="action-btn" @click="editUser(row)"><i class="fa fa-edit"></i></button>
-              <button class="action-btn" @click="deleteUser(row)"><i class="fa fa-trash"></i></button>
+              <button class="action-btn" @click="editUser(user)"><i class="fa fa-edit"></i></button>
+              <button class="action-btn" @click="deleteUser(user)"><i class="fa fa-trash"></i></button>
             </td>
           </tr>
         </tbody>

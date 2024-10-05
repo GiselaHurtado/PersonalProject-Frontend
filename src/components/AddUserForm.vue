@@ -3,13 +3,26 @@
     <h2>Agregar Nuevo Usuario</h2>
 
     <div class="form-group">
-      <label for="name">Name</label>
-      <input v-model="name" type="text" placeholder="Name" />
+      <label for="name">Username</label>
+      <input v-model="username" type="text" placeholder="Username" />
     </div>
 
     <div class="form-group">
       <label for="email">Email</label>
       <input v-model="email" type="email" placeholder="Email" />
+    </div>
+
+    <div class="form-group">
+      <label for="role">Role</label>
+      <select v-model="role">
+        <option value="ROLE_USER">Usuario</option>
+        <option value="ROLE_ADMIN">Administrador</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input v-model="password" type="password" placeholder="Password" />
     </div>
 
     <button @click="addUser" class="submit-btn">Agregar Usuario</button>
@@ -19,18 +32,23 @@
 <script setup>
 import { ref } from 'vue';
 
-const name = ref('');
+const username = ref('');
 const email = ref('');
+const password = ref('');
+const role = ref('ROLE_USER');
+
+const emit = defineEmits(['add-user']);
 
 const addUser = () => {
   const newUser = {
-    id: Date.now(),
-    name: name.value,
+    username: username.value,
     email: email.value,
+    password: password.value,
+    roles: [role.value], // Enviamos el rol seleccionado como un array
   };
 
-  if (newUser.name && newUser.email) {
-    $emit('add-user', newUser); // Emitimos el evento al componente padre
+  if (newUser.username && newUser.email && newUser.password) {
+    emit('add-user', newUser); // Emitimos el evento al componente padre
     alert('Usuario agregado correctamente');
     resetForm();
   } else {
@@ -39,12 +57,15 @@ const addUser = () => {
 };
 
 const resetForm = () => {
-  name.value = '';
+  username.value = '';
   email.value = '';
+  password.value = '';
+  role.value = 'ROLE_USER';
 };
 </script>
 
 <style scoped>
+/* Estilos manteniendo los que ya tienes */
 .form-container {
   background-color: #f5f5f5;
   padding: 20px;
@@ -64,7 +85,7 @@ const resetForm = () => {
   margin-bottom: 5px;
 }
 
-.form-group input {
+.form-group input, .form-group select {
   width: 100%;
   padding: 8px;
   border-radius: 5px;
