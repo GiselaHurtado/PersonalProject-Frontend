@@ -1,16 +1,18 @@
-<!-- <script setup>
+<script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth'; // Usamos la tienda de autenticación
 
-const currentLanguage = ref('ES');
 const router = useRouter();
+const authStore = useAuthStore(); // Accedemos a la información de autenticación
 
-const changeLanguage = (lang) => {
-  currentLanguage.value = lang;
-};
+// Nombre del usuario (podríamos obtenerlo de la tienda de autenticación)
+const userName = ref(authStore.userName || 'User'); // Nombre del usuario o "User" por defecto
 
-const navigateTo = (route) => {
-  router.push(route);
+// Función para cerrar sesión
+const logout = () => {
+  authStore.logout(); // Llamamos a la función de cierre de sesión
+  router.push('/login'); // Redirigimos al login después de cerrar sesión
 };
 </script>
 
@@ -23,23 +25,23 @@ const navigateTo = (route) => {
       </svg>
     </div>
     <div class="menu">
-      <a @click="navigateTo('/')">HOME</a>
-      <a @click="navigateTo('/about')">ABOUT ME</a>
-      <a @click="navigateTo('/services')">SERVICES</a>
-      <a @click="navigateTo('/contact')">CONTACT ME</a>
+      <a @click="router.push('/')">HOME</a>
+      <a @click="router.push('/about')">ABOUT ME</a>
+      <a @click="router.push('/services')">SERVICES</a>
+      <a @click="router.push('/contact')">CONTACT ME</a>
     </div>
     <div class="right-section">
-      <div class="language-selector">
-        <span :class="{ 'active': currentLanguage === 'ES' }" @click="changeLanguage('ES')">ES</span>
-        <span :class="{ 'active': currentLanguage === 'EN' }" @click="changeLanguage('EN')">EN</span>
-      </div>
-      <div class="auth-buttons">
-        <button class="auth-button" @click="navigateTo('/login')">LOGIN</button>
-        <button class="auth-button" @click="navigateTo('/register')">REGISTER</button>
+     
+      <div class="user-section">
+        <!-- Saludo al usuario -->
+        <span class="user-greeting">Hi, {{ userName }}</span>
+        <!-- Botón de Logout -->
+        <button class="auth-button" @click="logout">LOGOUT</button>
       </div>
     </div>
   </nav>
 </template>
+
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500&display=swap');
 
@@ -80,10 +82,8 @@ const navigateTo = (route) => {
 }
 
 .menu a:hover {
-  color: #bdc445; /* Verde fluorescente 00ff40 */
-  text-shadow: none;
+  color: #bdc445; /* Verde fluorescente */
   background: transparent;
-  box-shadow: none;
 }
 
 .right-section {
@@ -92,9 +92,18 @@ const navigateTo = (route) => {
   gap: 20px;
 }
 
-.auth-buttons {
+/* Estilos del saludo y botón */
+.user-section {
   display: flex;
+  align-items: center;
   gap: 10px;
+}
+
+.user-greeting {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #000;
 }
 
 .auth-button {
@@ -114,37 +123,20 @@ const navigateTo = (route) => {
   background-color: #333;
 }
 
-.language-selector {
-  display: flex;
-  gap: 10px;
+/* Responsivo: ajustes para pantallas pequeñas */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    height: auto;
+    padding: 10px;
+  }
+  .menu {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .right-section {
+    flex-direction: column;
+    gap: 10px;
+  }
 }
-
-.language-selector span {
-  cursor: pointer;
-  font-family: 'Quicksand', sans-serif;
-  font-weight: 400;
-  font-size: 14px;
-}
-
-.language-selector .active {
-  color: #bdc445;
-  font-weight: 500;
-}
-
-.image-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 60px; /* Para dar espacio al navbar fijo */
-  padding: 20px;
-}
-
-.image-container img {
-  width: 1200px;
-  height: 800px;
-  object-fit: cover;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  margin-bottom: 20px;
-}
-</style> -->
+</style>

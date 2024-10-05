@@ -1,4 +1,5 @@
-<!-- <script setup>
+
+<script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -40,6 +41,8 @@ const navigateTo = (route) => {
     </div>
   </nav>
 </template>
+
+
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500&display=swap');
 
@@ -57,6 +60,11 @@ const navigateTo = (route) => {
   left: 0;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   z-index: 1000;
+}
+
+body {
+  background-color: #2f2f2f; /* Fondo gris oscuro para el cuerpo de la página */
+  color: #ffffff; /* Texto blanco para que se vea bien sobre el fondo oscuro */
 }
 
 .logo {
@@ -147,4 +155,4 @@ const navigateTo = (route) => {
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   margin-bottom: 20px;
 }
-</style> -->
+</style> 
