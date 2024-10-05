@@ -1,12 +1,13 @@
 <script setup>
 import AdminNavBar from '@/components/AdminNavBar.vue';
 import Dashboard from '@/components/Dashboard.vue';
+
 </script>
 
 <template>
     <AdminNavBar />
     <Dashboard />
-
+ 
 </template>
 
 <style scoped>

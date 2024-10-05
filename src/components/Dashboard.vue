@@ -1,16 +1,19 @@
 <script setup>
 import { ref, computed } from 'vue';
 import axios from 'axios';
+import AddUserForm from './AddUserForm.vue';
+import EditUserForm from './EditUserForm.vue';
+import DeleteUserForm from './DeleteUserForm.vue';
 
 const tableData = ref([
-  { id: 1, registrationDate: '2023-01-15', name: 'Dakota Rice', email: 'dakota.rice@example.com', student: 'Yes' },
-  { id: 2, registrationDate: '2023-03-12', name: 'Minerva Hooper', email: 'minerva.hooper@example.com', student: 'No' },
-  { id: 3, registrationDate: '2023-02-22', name: 'Sage Rodriguez', email: 'sage.rodriguez@example.com', student: 'Yes' },
-  { id: 4, registrationDate: '2023-04-18', name: 'Philip Chaney', email: 'philip.chaney@example.com', student: 'No' },
-  { id: 5, registrationDate: '2023-05-05', name: 'Doris Greene', email: 'doris.greene@example.com', student: 'Yes' },
-  { id: 6, registrationDate: '2023-06-25', name: 'Mason Porter', email: 'mason.porter@example.com', student: 'No' },
-  { id: 7, registrationDate: '2023-07-12', name: 'Alden Chen', email: 'alden.chen@example.com', student: 'Yes' },
-  { id: 8, registrationDate: '2023-08-14', name: 'Colton Hodges', email: 'colton.hodges@example.com', student: 'No' }
+  { id: 1, name: 'Dakota Rice', email: 'dakota.rice@example.com' },
+  { id: 2, name: 'Minerva Hooper', email: 'minerva.hooper@example.com' },
+  { id: 3, name: 'Sage Rodriguez', email: 'sage.rodriguez@example.com' },
+  { id: 4, name: 'Philip Chaney', email: 'philip.chaney@example.com' },
+  { id: 5, name: 'Doris Greene', email: 'doris.greene@example.com' },
+  { id: 6, name: 'Mason Porter', email: 'mason.porter@example.com' },
+  { id: 7, name: 'Alden Chen', email: 'alden.chen@example.com' },
+  { id: 8, name: 'Colton Hodges', email: 'colton.hodges@example.com' }
 ]);
 
 const searchQuery = ref('');
@@ -20,41 +23,42 @@ const filteredData = computed(() => {
   );
 });
 
-const deleteUser = async (id) => {
-  try {
-    await axios.delete(`/api/v1/users/${id}`, {
-      auth: {
-        username: 'admin',
-        password: 'admin_password'
-      }
-    });
-    tableData.value = tableData.value.filter(user => user.id !== id);
-    alert('Usuario eliminado correctamente');
-  } catch (error) {
-    console.error('Error al eliminar el usuario:', error);
-    alert('No se pudo eliminar el usuario');
+const selectedUser = ref(null);
+const showAddForm = ref(false); // Estado para el modal de agregar
+const showEditForm = ref(false); // Estado para el modal de editar
+const showDeleteForm = ref(false); // Estado para el modal de eliminación
+
+const handleAddUser = (newUser) => {
+  tableData.value.push(newUser);
+  showAddForm.value = false; // Ocultar modal de agregar
+};
+
+const handleEditUser = (updatedUser) => {
+  const index = tableData.value.findIndex(user => user.id === updatedUser.id);
+  if (index !== -1) {
+    tableData.value[index] = updatedUser;
   }
+  showEditForm.value = false; // Ocultar modal de editar
+};
+
+const handleDeleteUser = (userToDelete) => {
+  tableData.value = tableData.value.filter(user => user.id !== userToDelete.id);
+  showDeleteForm.value = false;
+  alert('Usuario eliminado correctamente');
 };
 
 const editUser = (user) => {
-  alert(`Editando usuario: ${user.name}`);
+  selectedUser.value = user;
+  showEditForm.value = true; // Mostrar modal de editar
 };
 
-const addUser = async () => {
-  const newUser = { id: Date.now(), registrationDate: '2024-01-01', name: 'New User', email: 'new.user@example.com', student: 'Yes' };
-  try {
-    await axios.post('/api/v1/users', newUser, {
-      auth: {
-        username: 'admin',
-        password: 'admin_password'
-      }
-    });
-    tableData.value.push(newUser);
-    alert('Usuario agregado correctamente');
-  } catch (error) {
-    console.error('Error al agregar el usuario:', error);
-    alert('No se pudo agregar el usuario');
-  }
+const deleteUser = (user) => {
+  selectedUser.value = user;
+  showDeleteForm.value = true; // Mostrar modal de eliminar
+};
+
+const toggleAddForm = () => {
+  showAddForm.value = !showAddForm.value; // Alternar visibilidad del modal de agregar usuario
 };
 </script>
 
@@ -62,35 +66,58 @@ const addUser = async () => {
   <div class="table-container">
     <h1>REGISTERED PEOPLE</h1>
 
+    <!-- Búsqueda de usuarios -->
+    <input type="text" v-model="searchQuery" placeholder="Buscar por nombre..." />
+
     <div class="table-responsive">
       <table class="table">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Registration Date</th>
+            <th>User ID</th>
             <th>Name</th>
             <th>Email</th>
-            <th>Student</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="row in filteredData" :key="row.id">
             <td>{{ row.id }}</td>
-            <td>{{ row.registrationDate }}</td>
             <td>{{ row.name }}</td>
             <td>{{ row.email }}</td>
-            <td>{{ row.student }}</td>
             <td class="actions">
               <button class="action-btn" @click="editUser(row)"><i class="fa fa-edit"></i></button>
-              <button class="action-btn" @click="deleteUser(row.id)"><i class="fa fa-trash"></i></button>
+              <button class="action-btn" @click="deleteUser(row)"><i class="fa fa-trash"></i></button>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <button class="add-btn" @click="addUser">Agregar Usuario</button>
+    <!-- Botón para agregar usuario -->
+    <button class="add-btn" @click="toggleAddForm">Agregar Usuario</button>
+
+    <!-- Modal para Agregar Usuario -->
+    <div v-if="showAddForm" class="modal">
+      <div class="modal-content">
+        <AddUserForm @add-user="handleAddUser" />
+        <button @click="showAddForm = false" class="close-btn">Cerrar</button>
+      </div>
+    </div>
+
+    <!-- Modal para Editar Usuario -->
+    <div v-if="showEditForm" class="modal">
+      <div class="modal-content">
+        <EditUserForm :userToEdit="selectedUser" @edit-user="handleEditUser" />
+        <button @click="showEditForm = false" class="close-btn">Cerrar</button>
+      </div>
+    </div>
+
+    <!-- Modal para Eliminar Usuario -->
+    <div v-if="showDeleteForm" class="modal">
+      <div class="modal-content">
+        <DeleteUserForm :user="selectedUser" @delete-user="handleDeleteUser" @close="showDeleteForm = false" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -110,7 +137,7 @@ const addUser = async () => {
 
 /* Hacer la tabla responsive */
 .table-responsive {
-  overflow-x: auto; /* Permite el scroll horizontal en pantallas pequeñas */
+  overflow-x: auto;
 }
 
 .table {
@@ -183,32 +210,36 @@ const addUser = async () => {
   background-color: #a1b13c;
 }
 
-/* Estilos para dispositivos móviles */
-@media (max-width: 768px) {
-  .table th, .table td {
-    font-size: 14px;
-    padding: 10px;
-  }
-
-  .add-btn {
-    font-size: 14px;
-    padding: 12px 16px;
-  }
+/* Modal styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-@media (max-width: 480px) {
-  .table th, .table td {
-    font-size: 12px;
-    padding: 8px;
-  }
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+}
 
-  .add-btn {
-    font-size: 12px;
-    padding: 10px 14px;
-  }
+.close-btn {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #bdc445;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
 
-  .actions {
-    gap: 5px;
-  }
+.close-btn:hover {
+  background-color: #a1b13c;
 }
 </style>
