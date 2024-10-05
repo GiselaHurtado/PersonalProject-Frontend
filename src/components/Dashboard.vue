@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue';
+import axios from 'axios';
 
 const tableData = ref([
   { id: 1, registrationDate: '2023-01-15', name: 'Dakota Rice', email: 'dakota.rice@example.com', student: 'Yes' },
@@ -18,118 +19,196 @@ const filteredData = computed(() => {
     item.name.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
 });
+
+const deleteUser = async (id) => {
+  try {
+    await axios.delete(`/api/v1/users/${id}`, {
+      auth: {
+        username: 'admin',
+        password: 'admin_password'
+      }
+    });
+    tableData.value = tableData.value.filter(user => user.id !== id);
+    alert('Usuario eliminado correctamente');
+  } catch (error) {
+    console.error('Error al eliminar el usuario:', error);
+    alert('No se pudo eliminar el usuario');
+  }
+};
+
+const editUser = (user) => {
+  alert(`Editando usuario: ${user.name}`);
+};
+
+const addUser = async () => {
+  const newUser = { id: Date.now(), registrationDate: '2024-01-01', name: 'New User', email: 'new.user@example.com', student: 'Yes' };
+  try {
+    await axios.post('/api/v1/users', newUser, {
+      auth: {
+        username: 'admin',
+        password: 'admin_password'
+      }
+    });
+    tableData.value.push(newUser);
+    alert('Usuario agregado correctamente');
+  } catch (error) {
+    console.error('Error al agregar el usuario:', error);
+    alert('No se pudo agregar el usuario');
+  }
+};
 </script>
 
 <template>
   <div class="table-container">
     <h1>REGISTERED PEOPLE</h1>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Registration Date</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Student</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="row in filteredData" :key="row.id">
-          <td>{{ row.id }}</td>
-          <td>{{ row.registrationDate }}</td>
-          <td>{{ row.name }}</td>
-          <td>{{ row.email }}</td>
-          <td>{{ row.student }}</td>
-          <td>
-            <button class="action-btn"><i class="fa fa-heart"></i></button>
-            <button class="action-btn"><i class="fa fa-edit"></i></button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Registration Date</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Student</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="row in filteredData" :key="row.id">
+            <td>{{ row.id }}</td>
+            <td>{{ row.registrationDate }}</td>
+            <td>{{ row.name }}</td>
+            <td>{{ row.email }}</td>
+            <td>{{ row.student }}</td>
+            <td class="actions">
+              <button class="action-btn" @click="editUser(row)"><i class="fa fa-edit"></i></button>
+              <button class="action-btn" @click="deleteUser(row.id)"><i class="fa fa-trash"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <button class="add-btn" @click="addUser">Agregar Usuario</button>
   </div>
 </template>
 
 <style scoped>
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css'); /* Importa los iconos */
 
-/* Aplica el color verde al h1 */
-.table-container h1 {
-  font-family: 'Quicksand', sans-serif;
-  font-weight: 400;
-  color: #bdc445; /* Verde */
-  text-align: center;
-}
-
+/* Mantener bordes redondeados */
 .table-container {
   width: 100%;
-  max-width: 1100px; /* Hacemos la tabla más grande */
-  margin: 90px auto; /* Aumentamos el margen superior a 50px */
+  max-width: 1100px;
+  margin: 90px auto;
   padding: 20px;
   background-color: transparent;
-  border-radius: 20px; /* Bordes más redondeados */
-  box-shadow: none; /* Eliminamos cualquier sombra de borde */
+  border-radius: 20px;
   color: black;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 10px;
-}
-
-.search-input {
-  padding: 10px;
-  width: 300px;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-  font-size: 16px;
+/* Hacer la tabla responsive */
+.table-responsive {
+  overflow-x: auto; /* Permite el scroll horizontal en pantallas pequeñas */
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
-  border-radius: 20px; /* Bordes redondeados de la tabla */
-  overflow: hidden; /* Asegurarse que el contenido respete los bordes redondeados */
+  border-radius: 20px;
+  overflow: hidden;
 }
 
 .table thead {
-  background-color: #bdc445; /* Color amarillo */
+  background-color: #bdc445;
   color: black;
 }
 
-.table th,
-.table td {
-  padding: 14px 18px; /* Hacemos las celdas un poco más grandes */
-  border: none; /* Eliminamos cualquier recuadro alrededor de las celdas */
+.table th, .table td {
+  padding: 14px 18px;
+  border: none;
   text-align: left;
 }
 
 .table tbody tr:nth-child(even) {
-  background-color: #e0e596; /* Amarillo claro */
+  background-color: #e0e596;
 }
 
 .table tbody tr:nth-child(odd) {
-  background-color: #d2d85b; /* Amarillo intermedio */
+  background-color: #d2d85b;
 }
 
 .table tbody tr:hover {
-  background-color: #e2e2e2; /* Gris al pasar el mouse */
+  background-color: #e2e2e2;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
 }
 
 .action-btn {
   background: none;
   border: none;
   font-size: 18px;
-  color: black; /* Íconos en blanco */
+  color: black;
   cursor: pointer;
-  margin-right: 5px;
 }
 
 .action-btn:hover {
-  color: #ff4d4d; /* Color al pasar sobre el ícono */
+  color: #7d7f7a;
+}
+
+/* Estilo del botón agregar usuario */
+.add-btn {
+  display: block;
+  width: 100%;
+  padding: 14px 18px;
+  margin-top: 20px;
+  background-color: #bdc445;
+  border: none;
+  border-radius: 20px;
+  text-align: center;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: black;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-btn:hover {
+  background-color: #a1b13c;
+}
+
+/* Estilos para dispositivos móviles */
+@media (max-width: 768px) {
+  .table th, .table td {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .add-btn {
+    font-size: 14px;
+    padding: 12px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .table th, .table td {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .add-btn {
+    font-size: 12px;
+    padding: 10px 14px;
+  }
+
+  .actions {
+    gap: 5px;
+  }
 }
 </style>
