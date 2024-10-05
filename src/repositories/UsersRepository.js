@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+// Codificar las credenciales en Base64
 const encodeCredentials = (username, password) => {
   return 'Basic ' + btoa(`${username}:${password}`);
 };
@@ -43,6 +44,7 @@ export default class UsersRepository {
 
   async updateUser(id, updatedUser, username, password) {
     try {
+      if (!id) throw new Error('ID del usuario es undefined o null'); // Verificación del id
       const response = await axios.put(`${this.uri}/${id}`, updatedUser, {
         headers: {
           Authorization: encodeCredentials(username, password),
@@ -59,6 +61,7 @@ export default class UsersRepository {
 
   async deleteUser(id, username, password) {
     try {
+      if (!id) throw new Error('ID del usuario es undefined o null'); // Verificación del id
       const response = await axios.delete(`${this.uri}/${id}`, {
         headers: {
           Authorization: encodeCredentials(username, password),

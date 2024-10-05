@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import { useUserStore } from '@/stores/users'; // Importa el store de usuarios
+import { useUserStore } from '@/stores/users';  // Importa el store de usuarios
 import AddUserForm from './AddUserForm.vue';
 import EditUserForm from './EditUserForm.vue';
 import DeleteUserForm from './DeleteUserForm.vue';
@@ -27,13 +27,13 @@ const showDeleteForm = ref(false);  // Estado para el modal de eliminación
 
 // Montar el componente y cargar los usuarios desde el backend
 onMounted(() => {
-  userStore.fetchUsers(username.value, password.value);  // Fetch de usuarios al montar
+  userStore.fetchUsers(username.value, password.value);  // Fetch de usuarios al montar, ahora con las credenciales correctas
 });
 
 // Agregar nuevo usuario usando el store
 const handleAddUser = async (newUser) => {
   try {
-    await userStore.addUser(newUser, username.value, password.value);  // Agregar usuario
+    await userStore.addUser(newUser, username.value, password.value);  // Agregar usuario con credenciales correctas
     showAddForm.value = false;  // Ocultar modal de agregar
   } catch (error) {
     console.error('Error al agregar usuario:', error);
@@ -43,7 +43,12 @@ const handleAddUser = async (newUser) => {
 // Editar usuario usando el store
 const handleEditUser = async (updatedUser) => {
   try {
-    await userStore.updateUser(updatedUser.id, updatedUser, username.value, password.value);  // Editar usuario
+    // Asegúrate de que el id está definido antes de hacer la solicitud
+    if (!updatedUser.id) {
+      console.error('El ID del usuario no está definido');
+      return;
+    }
+    await userStore.updateUser(updatedUser.id, updatedUser, username.value, password.value);  // Editar usuario con credenciales correctas
     showEditForm.value = false;  // Ocultar modal de editar
   } catch (error) {
     console.error('Error al editar usuario:', error);
@@ -53,7 +58,12 @@ const handleEditUser = async (updatedUser) => {
 // Eliminar usuario usando el store
 const handleDeleteUser = async (userToDelete) => {
   try {
-    await userStore.deleteUser(userToDelete.id, username.value, password.value);  // Eliminar usuario
+    // Asegúrate de que el id está definido antes de hacer la solicitud
+    if (!userToDelete.id) {
+      console.error('El ID del usuario no está definido');
+      return;
+    }
+    await userStore.deleteUser(userToDelete.id, username.value, password.value);  // Eliminar usuario con credenciales correctas
     showDeleteForm.value = false;
     alert('Usuario eliminado correctamente');
   } catch (error) {
@@ -63,7 +73,7 @@ const handleDeleteUser = async (userToDelete) => {
 
 // Abrir el modal de editar usuario
 const editUser = (user) => {
-  selectedUser.value = user;  // Almacenar el usuario seleccionado
+  selectedUser.value = user;
   showEditForm.value = true;  // Mostrar modal de editar
 };
 
@@ -91,7 +101,7 @@ const toggleAddForm = () => {
         <thead>
           <tr>
             <th>User ID</th>
-            <th>Username</th>
+            <th>Name</th>
             <th>Email</th>
             <th>Actions</th>
           </tr>
@@ -137,6 +147,7 @@ const toggleAddForm = () => {
     </div>
   </div>
 </template>
+
 
 <style scoped>
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css'); /* Importa los iconos */
