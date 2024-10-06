@@ -68,13 +68,15 @@ watch(() => props.isLoginMode, () => {
 <style scoped>
 .auth-container {
   background-color: #333;
-  color: #fff;
+  color: #f9f9f9;
   padding: 2rem;
   justify-content: center;
   border-radius: 8px;
   width: 300px;
   margin: 15rem auto; 
   box-shadow: 0 4px 15px rgba(189, 196, 69, 0.5); 
+  font-family: 'Quicksand', sans-serif;
+  
 }
 
 h2 {

@@ -8,19 +8,19 @@ import AdminNavBar from './components/AdminNavBar.vue';
 
 const authStore = useAuthStore();
 
-// Computamos el rol del usuario desde la tienda
-const userRole = computed(() => authStore.role);  // Ajustamos a authStore.role
+
+const userRole = computed(() => authStore.role);  
 const isAuthenticated = computed(() => authStore.isAuthenticated);
 </script>
 
 <template>
   <div id="app">
-    <!-- Mostramos el navbar correspondiente al rol -->
+
     <GeneralNavBar v-if="!isAuthenticated" />
     <UserNavBar v-else-if="userRole === 'ROLE_USER'" />
     <AdminNavBar v-else-if="userRole === 'ROLE_ADMIN'" />
     
-    <!-- La vista del router -->
+
     <RouterView />
   </div>
 </template>
@@ -29,12 +29,12 @@ const isAuthenticated = computed(() => authStore.isAuthenticated);
 body, html {
   margin: 0;
   padding: 0;
-  background-color: #2f2f2f; /* Fondo gris oscuro */
+  background-color: #2f2f2f;
 }
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  color: #ffffff; /* Cambia el color del texto a blanco para mejor contraste */
+  color: #ffffff; 
   height: 100%;
 }
 

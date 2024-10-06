@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import AuthForm from '@/components/AuthForm.vue';  // Asegúrate de que esta sea la ruta correcta
+import AuthForm from '@/components/AuthForm.vue';  
 import { useAuthStore } from '@/stores/auth.js'; 
 import { useRouter } from 'vue-router';
 

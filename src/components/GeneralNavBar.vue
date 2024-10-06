@@ -15,6 +15,8 @@ const navigateTo = (route) => {
 };
 </script>
 
+
+
 <template>
   <nav class="navbar">
     <div class="logo">
@@ -36,12 +38,11 @@ const navigateTo = (route) => {
       </div>
       <div class="auth-buttons">
         <button class="auth-button" @click="navigateTo('/login')">LOGIN</button>
-        <button class="auth-button" @click="navigateTo('/register')">REGISTER</button>
+        <button class="auth-button register-btn" @click="navigateTo('/register')">REGISTER</button>
       </div>
     </div>
   </nav>
 </template>
-
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500&display=swap');
@@ -60,20 +61,21 @@ const navigateTo = (route) => {
   left: 0;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   z-index: 1000;
-}
-
-body {
-  background-color: #2f2f2f; /* Fondo gris oscuro para el cuerpo de la página */
-  color: #ffffff; /* Texto blanco para que se vea bien sobre el fondo oscuro */
+  padding-left: 20px;
+  padding-right: 20px;
+  overflow-x: auto;
 }
 
 .logo {
   height: 40px;
+  flex-shrink: 0;
 }
 
 .menu {
   display: flex;
   gap: 20px;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .menu a {
@@ -88,7 +90,7 @@ body {
 }
 
 .menu a:hover {
-  color: #bdc445; /* Verde fluorescente 00ff40 */
+  color: #bdc445;
   text-shadow: none;
   background: transparent;
   box-shadow: none;
@@ -98,6 +100,7 @@ body {
   display: flex;
   align-items: center;
   gap: 20px;
+  flex-shrink: 0;
 }
 
 .auth-buttons {
@@ -122,6 +125,10 @@ body {
   background-color: #333;
 }
 
+.register-btn {
+  margin-right: 50px;
+}
+
 .language-selector {
   display: flex;
   gap: 10px;
@@ -139,20 +146,26 @@ body {
   font-weight: 500;
 }
 
-.image-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 60px; /* Para dar espacio al navbar fijo */
-  padding: 20px;
+@media (max-width: 768px) {
+  .navbar {
+    white-space: nowrap;
+    overflow-x: scroll;
+  }
+
+  .menu {
+    display: flex;
+    gap: 20px;
+  }
+
+  .right-section {
+    display: flex;
+    gap: 20px;
+  }
 }
 
-.image-container img {
-  width: 1200px;
-  height: 800px;
-  object-fit: cover;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  margin-bottom: 20px;
+@media (min-width: 769px) {
+  .navbar {
+    justify-content: space-between;
+  }
 }
-</style> 
+</style>

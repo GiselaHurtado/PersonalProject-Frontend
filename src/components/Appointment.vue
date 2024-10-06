@@ -13,24 +13,31 @@
 
 <style scoped>
 .calendar-container {
-  margin: 100px 100px 50px 100px;
+  margin: 100px 80px 50px 200px;
   display: flex;
+  width: 70%;
   justify-content: center;
   align-items: center;
-  background-color: #efefe5;
+  background-color: #b9bf4eb8;
+  color: #f9f9f9;
+  box-shadow: 0 14px 15px 20px rgba(189, 196, 69, 0.5); 
   padding: 20px;
   border-radius: 10px;
   box-sizing: border-box;
+  font-family: 'Quicksand', sans-serif;
 }
 
 
 .calendar-frame {
   border: 0;
-  width: 100%;
+  width: 70%;
   height: 850px;
   frameborder: 0;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   max-width: 1200px;
+  box-shadow: 0 4px 15px rgba(189, 196, 69, 0.5); 
+  color: #f9f9f9;
+  font-family: 'Quicksand', sans-serif;
 }
 
 
