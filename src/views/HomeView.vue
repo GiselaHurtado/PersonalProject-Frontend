@@ -13,11 +13,11 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="home-view">
-    <div class="image-container">
-      <img v-for="(image, index) in images" :key="index" :src="image" :alt="`Large Image ${index + 1}`" />
+  <div class="body-content">
+    <div class="image-container" v-if="images.length > 0">
+      <img :src="images[0]" alt="Large Image 1" />
     </div>
-    <div v-if="images.length === 0">No se han cargado imágenes.</div>
+    <div v-else>No se han cargado imágenes.</div>
   </div>
 </template>
 
@@ -33,21 +33,21 @@ onMounted(async () => {
 }
 
 .image-container {
-  position: center;
-  margin-left: 0%;
-  margin-right: 60%;
+  position: absolute;
+ margin: auto;
   top: 0;
   left: 0;
-  width: 20%;
-  height: 20%;
+  width: 30%;
+  height: 30%;
 
 }
 
 .image-container img {
-  width: 400%;
+  width: 350%;
   height: auto;
   object-fit: contain;
   margin-bottom: 40px;
   margin-left: 0%;
+  margin-right: 0%;
 }
 </style>

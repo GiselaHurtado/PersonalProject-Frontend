@@ -49,9 +49,9 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #1a1a1a;
+    background-color: #2f2f2f;
     font-family: 'Quicksand', sans-serif;
-    color: #000;
+    color: #333;
     font-weight: 200;
   }
   
@@ -59,9 +59,9 @@
     width: 50%;
     max-width: 500px;
     height: auto;
-    background-color: white;
+    background-color: #333;
     border-radius: 10px;
-    box-shadow: 13px 10px 12px 3px rgba(224, 220, 224, 1);
+    box-shadow: 0 4px 15px rgba(189, 196, 69, 0.5); 
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -73,13 +73,14 @@
   }
   
   .contact-card {
-    background-color: white;
+    background-color: #333;
+    box-shadow: 0 4px 15px rgba(189, 196, 69, 0.5); 
   }
   
   .contact-info-card {
-    background-color: #bdc445;
-    color: white;
+    background-color: #333;
     text-align: center;
+     color: #777;
   }
   
   .contact-info-content {
@@ -91,8 +92,8 @@
     margin-bottom: 1rem;
     font-size: 1.8rem;
     font-family: 'Quicksand', sans-serif;
-    color: #000;
-    font-weight: 200;
+    color: #777;
+    font-weight: 300;
   }
   
   .subtitle {
@@ -122,14 +123,16 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    
   }
   
   input, textarea {
     margin-bottom: 1rem;
     padding: 0.8rem;
-    border: 1px solid #ddd;
+    box-shadow: 0 4px 15px rgba(189, 196, 69, 0.5); 
     border-radius: 4px;
     font-size: 1rem;
+    background-color: #333;
   }
   
   textarea {
@@ -145,10 +148,12 @@
     font-weight: bold;
     font-size: 1rem;
     background-color: #bdc445;
-    color: white;
+    font-family: 'Quicksand', sans-serif;
+    color: #000;
+    font-weight: 300;
     width: 100%;
     transition: background-color 0.3s;
-    box-shadow: 8px 8px 8px 3px rgba(224, 220, 224, 1);
+    box-shadow: 0 4px 15px rgba(189, 196, 69, 0.5); 
   }
   
   .btn-primary:hover {

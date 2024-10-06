@@ -1,19 +1,17 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useAuthStore } from '@/stores/auth'; // Importamos la tienda de autenticación
+import { useAuthStore } from '@/stores/auth';
 
 const router = useRouter();
-const authStore = useAuthStore(); // Usamos la tienda de autenticación
+const authStore = useAuthStore();
 
-// Función para cerrar sesión
 const logout = () => {
-  authStore.logout();  // Llamamos la función de cierre de sesión desde la tienda
-  router.push('/login'); // Redirigimos al login después de cerrar sesión
+  authStore.logout();
+  router.push('/login');
 };
 
-// Computed property para verificar si el usuario está autenticado
-const isAuthenticated = ref(authStore.isAuthenticated); // Asume que 'isAuthenticated' existe en la tienda
+const isAuthenticated = ref(authStore.isAuthenticated);
 </script>
 
 <template>
