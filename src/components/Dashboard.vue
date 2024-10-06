@@ -1,69 +1,60 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import { useUserStore } from '@/stores/users';  // Importa el store de usuarios
+import { useUserStore } from '@/stores/users';
 import AddUserForm from './AddUserForm.vue';
 import EditUserForm from './EditUserForm.vue';
 import DeleteUserForm from './DeleteUserForm.vue';
 
-const userStore = useUserStore();  // Instancia del store de usuarios
-const username = ref('admin');  // Usuario correcto
-const password = ref('password');  // Contraseña correcta
+const userStore = useUserStore();
+const username = ref('admin');
+const password = ref('password');
 
-// Estado para manejar las búsquedas
 const searchQuery = ref('');
 
-// Computed para filtrar los usuarios con base en la búsqueda
 const filteredData = computed(() => {
   return userStore.users.filter((user) =>
     user.username.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
 });
 
-// Modal de usuario seleccionado
 const selectedUser = ref(null);
-const showAddForm = ref(false);  // Estado para el modal de agregar
-const showEditForm = ref(false);  // Estado para el modal de editar
-const showDeleteForm = ref(false);  // Estado para el modal de eliminación
+const showAddForm = ref(false);
+const showEditForm = ref(false);
+const showDeleteForm = ref(false);
 
-// Montar el componente y cargar los usuarios desde el backend
 onMounted(() => {
-  userStore.fetchUsers(username.value, password.value);  // Fetch de usuarios al montar, ahora con las credenciales correctas
+  userStore.fetchUsers(username.value, password.value);
 });
 
-// Agregar nuevo usuario usando el store
 const handleAddUser = async (newUser) => {
   try {
-    await userStore.addUser(newUser, username.value, password.value);  // Agregar usuario con credenciales correctas
-    showAddForm.value = false;  // Ocultar modal de agregar
+    await userStore.addUser(newUser, username.value, password.value);
+    showAddForm.value = false;
   } catch (error) {
     console.error('Error al agregar usuario:', error);
   }
 };
 
-// Editar usuario usando el store
 const handleEditUser = async (updatedUser) => {
   try {
-    // Asegúrate de que el id está definido antes de hacer la solicitud
     if (!updatedUser.id) {
       console.error('El ID del usuario no está definido');
       return;
     }
-    await userStore.updateUser(updatedUser.id, updatedUser, username.value, password.value);  // Editar usuario con credenciales correctas
-    showEditForm.value = false;  // Ocultar modal de editar
+    await userStore.updateUser(updatedUser.id, updatedUser, username.value, password.value);
+    showEditForm.value = false;
   } catch (error) {
     console.error('Error al editar usuario:', error);
   }
 };
 
-// Eliminar usuario usando el store
 const handleDeleteUser = async (userToDelete) => {
   try {
-    // Asegúrate de que el id está definido antes de hacer la solicitud
     if (!userToDelete.id) {
       console.error('El ID del usuario no está definido');
       return;
     }
-    await userStore.deleteUser(userToDelete.id, username.value, password.value);  // Eliminar usuario con credenciales correctas
+    await userStore.deleteUser(userToDelete.id, username.value, password.value);
     showDeleteForm.value = false;
     alert('Usuario eliminado correctamente');
   } catch (error) {
@@ -71,19 +62,16 @@ const handleDeleteUser = async (userToDelete) => {
   }
 };
 
-// Abrir el modal de editar usuario
 const editUser = (user) => {
   selectedUser.value = user;
-  showEditForm.value = true;  // Mostrar modal de editar
+  showEditForm.value = true;
 };
 
-// Abrir el modal de eliminar usuario
 const deleteUser = (user) => {
   selectedUser.value = user;
-  showDeleteForm.value = true;  // Mostrar modal de eliminar
+  showDeleteForm.value = true;
 };
 
-// Alternar la visibilidad del modal de agregar usuario
 const toggleAddForm = () => {
   showAddForm.value = !showAddForm.value;
 };
@@ -91,10 +79,9 @@ const toggleAddForm = () => {
 
 <template>
   <div class="table-container">
-    <h1>REGISTERED PEOPLE</h1>
+    <h1>REGISTERED USERS</h1>
 
-    <!-- Búsqueda de usuarios -->
-    <input type="text" v-model="searchQuery" placeholder="Buscar por nombre..." />
+    <input type="text" v-model="searchQuery" placeholder="Buscar por nombre..." class="search-input" />
 
     <div class="table-responsive">
       <table class="table">
@@ -120,10 +107,8 @@ const toggleAddForm = () => {
       </table>
     </div>
 
-    <!-- Botón para agregar usuario -->
     <button class="add-btn" @click="toggleAddForm">Agregar Usuario</button>
 
-    <!-- Modal para Agregar Usuario -->
     <div v-if="showAddForm" class="modal">
       <div class="modal-content">
         <AddUserForm @add-user="handleAddUser" />
@@ -131,7 +116,6 @@ const toggleAddForm = () => {
       </div>
     </div>
 
-    <!-- Modal para Editar Usuario -->
     <div v-if="showEditForm" class="modal">
       <div class="modal-content">
         <EditUserForm :userToEdit="selectedUser" @edit-user="handleEditUser" />
@@ -139,7 +123,6 @@ const toggleAddForm = () => {
       </div>
     </div>
 
-    <!-- Modal para Eliminar Usuario -->
     <div v-if="showDeleteForm" class="modal">
       <div class="modal-content">
         <DeleteUserForm :user="selectedUser" @delete-user="handleDeleteUser" @close="showDeleteForm = false" />
@@ -148,11 +131,9 @@ const toggleAddForm = () => {
   </div>
 </template>
 
-
 <style scoped>
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css'); /* Importa los iconos */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
 
-/* Mantener bordes redondeados */
 .table-container {
   width: 100%;
   max-width: 1100px;
@@ -163,7 +144,12 @@ const toggleAddForm = () => {
   color: black;
 }
 
-/* Hacer la tabla responsive */
+h1{
+  color: #a1b13c;
+  text-align: center;
+  font-family: 'Quicksand', sans-serif;
+}
+
 .table-responsive {
   overflow-x: auto;
 }
@@ -196,7 +182,7 @@ const toggleAddForm = () => {
 }
 
 .table tbody tr:hover {
-  background-color: #e2e2e2;
+  background-color: #b4d20a;
 }
 
 .actions {
@@ -213,10 +199,9 @@ const toggleAddForm = () => {
 }
 
 .action-btn:hover {
-  color: #7d7f7a;
+  color: #83f707;
 }
 
-/* Estilo del botón agregar usuario */
 .add-btn {
   display: block;
   width: 100%;
@@ -238,7 +223,6 @@ const toggleAddForm = () => {
   background-color: #a1b13c;
 }
 
-/* Modal styles */
 .modal {
   position: fixed;
   top: 0;
@@ -269,5 +253,24 @@ const toggleAddForm = () => {
 
 .close-btn:hover {
   background-color: #a1b13c;
+}
+
+.search-input {
+  width: 20%;
+  background-color: #e0e596;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 16px;
+  font-family: 'Quicksand', sans-serif;
+  box-shadow: 0 4px 15px rgba(189, 196, 69, 0.5); 
+  outline: none;
+  color: black !important;
+}
+
+.search-input:focus {
+  border-color: #bdc445; /* Borde personalizado al hacer foco, puedes cambiar el color */
+  box-shadow: 0px 4px 12px rgba(189, 196, 69, 0.5); /* Opcional: sombra adicional en foco */
 }
 </style>

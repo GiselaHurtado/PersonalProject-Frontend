@@ -69,6 +69,7 @@ const navigateTo = (route) => {
 .logo {
   height: 40px;
   flex-shrink: 0;
+  margin-left: 30px;
 }
 
 .menu {

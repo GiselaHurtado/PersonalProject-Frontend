@@ -24,8 +24,8 @@ onMounted(async () => {
 <style scoped>
 .home-view {
   padding-top: 60px;
-  padding-bottom: 60px; /* Para dar espacio al footer */
-  min-height: calc(100vh - 120px); /* 100vh - (header + footer) */
+  padding-bottom: 60px;
+  min-height: calc(100vh - 120px); 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -35,17 +35,19 @@ onMounted(async () => {
 .image-container {
   position: center;
   margin-left: 0%;
-  margin-right: 0%;
+  margin-right: 60%;
   top: 0;
   left: 0;
   width: 20%;
   height: 20%;
+
 }
 
 .image-container img {
-  width: 450%;
+  width: 400%;
   height: auto;
   object-fit: contain;
   margin-bottom: 40px;
+  margin-left: 0%;
 }
 </style>

@@ -23,26 +23,26 @@ onMounted(async () => {
 
 <style scoped>
 .body-content {
-  margin-top: 60px; /* Para dar espacio al navbar fijo */
-  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
 }
 
 .image-container {
-  position: center;
-  top: 0;
-  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: 100%;
-  margin-left: 0;
 }
 
 .image-container img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  margin-bottom: 20px;
-  margin-left: 0;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
 }
 </style>

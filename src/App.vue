@@ -27,8 +27,8 @@ const isAuthenticated = computed(() => authStore.isAuthenticated);
 
 <style>
 body, html {
-  margin: 0;
-  padding: 0;
+  margin: 0px;
+  padding: 0px;
   background-color: #2f2f2f;
 }
 
