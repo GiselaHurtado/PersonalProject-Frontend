@@ -36,6 +36,6 @@ const handleRegister = async (name, username, password) => {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f0f0f0;
+  background-color: #333;
 }
 </style>

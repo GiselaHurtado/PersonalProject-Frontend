@@ -4,7 +4,7 @@ import { ref, watch } from 'vue';
 const props = defineProps({
   isLoginMode: {
     type: Boolean,
-    default: true, // Por defecto, el formulario será de login
+    default: true, 
   },
   onSubmit: {
     type: Function,
@@ -17,11 +17,11 @@ const password = ref('');
 const name = ref('');
 const errorMessage = ref('');
 
-// Función que maneja el envío del formulario
+
 const handleSubmit = async () => {
   errorMessage.value = '';
   try {
-    if (props.isLoginMode) {  // Usamos props.isLoginMode
+    if (props.isLoginMode) { 
       await props.onSubmit(username.value, password.value);
     } else {
       await props.onSubmit(name.value, username.value, password.value);
@@ -31,7 +31,7 @@ const handleSubmit = async () => {
   }
 };
 
-// Resetea los campos del formulario cuando cambie de modo (login/registro)
+
 watch(() => props.isLoginMode, () => {
   username.value = '';
   password.value = '';
@@ -39,9 +39,8 @@ watch(() => props.isLoginMode, () => {
   errorMessage.value = '';
 });
 </script>
-
 <template>
-  <div class="auth-form">
+  <div class="auth-container">
     <h2>{{ props.isLoginMode ? 'Sign in to my Website' : 'Create Account' }}</h2>
     <div class="social-icons">
       <a href="#" class="icon"><i class="fab fa-facebook-f"></i></a>
@@ -49,7 +48,7 @@ watch(() => props.isLoginMode, () => {
       <a href="#" class="icon"><i class="fab fa-twitter"></i></a>
     </div>
     <p class="subtitle">
-      {{ props.isLoginMode ? 'or use your username account' : 'or use username for registration' }}
+      {{ props.isLoginMode ? 'Or use your username account' : 'or use username for registration.' }}
     </p>
     <form @submit.prevent="handleSubmit">
       <template v-if="!props.isLoginMode">
@@ -66,30 +65,48 @@ watch(() => props.isLoginMode, () => {
   </div>
 </template>
 
-
 <style scoped>
-.auth-form {
+.auth-container {
+  background-color: #333;
+  color: #fff;
+  padding: 2rem;
+  justify-content: center;
+  border-radius: 8px;
+  width: 300px;
+  margin: 15rem auto; 
+  box-shadow: 0 4px 15px rgba(189, 196, 69, 0.5); 
+}
+
+h2 {
+  text-align: center;
+  font-family: 'Quicksand', sans-serif;
+  margin-bottom: 1.5rem;
+}
+
+.social-icons {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.icon {
+  margin: 0 0.5rem;
+  color: #bdc445;
 }
 
 form {
   display: flex;
   flex-direction: column;
-  width: 100%;
 }
 
 input {
   margin-bottom: 1rem;
-  padding: 0.8rem;
-  border: 1px solid #ddd;
+  font-family: 'Quicksand', sans-serif;
+  padding: 0.5rem;
+  border: none;
   border-radius: 4px;
-  font-size: 1rem;
-}
-
-.error {
-  color: red;
+  background-color: #444;
+  color: #fff;
 }
 
 .forgot-password {
@@ -101,20 +118,67 @@ input {
 }
 
 .btn-primary {
-  padding: 0.8rem 1rem;
+  padding: 0.5rem;
+  font-family: 'Quicksand', sans-serif;
   border: none;
-  border-radius: 20px;
+  border-radius: 4px;
+  background-color: #bdc445;
+  color: #333;
   cursor: pointer;
   font-weight: bold;
-  font-size: 1rem;
-  transition: background-color 0.3s;
-  box-shadow: 8px 8px 8px 3px rgba(224, 220, 224, 1);
-  background-color: #bdc445;
-  color: white;
-  width: 100%;
 }
 
 .btn-primary:hover {
-  background-color: #aab03d;
+  background-color: #e6e600;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .auth-container {
+    width: 80%;
+    padding: 1.5rem;
+    margin: 14rem auto; /* Ajuste para móviles medianos */
+  }
+
+  input {
+    font-size: 0.9rem;
+    padding: 0.7rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .btn-primary {
+    font-size: 0.9rem;
+    padding: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-container {
+    width: 90%;
+    padding: 1rem;
+    margin: 13rem auto; /* Ajuste para pantallas pequeñas */
+  }
+
+  input {
+    font-size: 0.8rem;
+    padding: 0.6rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  .btn-primary {
+    font-size: 0.8rem;
+    padding: 0.6rem;
+  }
 }
 </style>
