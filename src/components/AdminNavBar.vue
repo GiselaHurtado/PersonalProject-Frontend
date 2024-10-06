@@ -140,9 +140,19 @@ const isAuthenticated = ref(authStore.isAuthenticated);
   }
 }
 
-@media (min-width: 769px) {
+@media (max-width: 768px) {
   .navbar {
-    justify-content: space-between;
+    flex-direction: column;
+    height: auto;
+    padding: 10px;
+  }
+  .menu {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .right-section {
+    flex-direction: column;
+    gap: 10px;
   }
 }
 </style>

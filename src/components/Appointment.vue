@@ -15,7 +15,7 @@
 .calendar-container {
   margin: 100px 80px 50px 200px;
   display: flex;
-  width: 70%;
+  width: 80%;
   justify-content: center;
   align-items: center;
   background-color: #b9bf4eb8;
@@ -30,7 +30,7 @@
 
 .calendar-frame {
   border: 0;
-  width: 70%;
+  width: 100%;
   height: 850px;
   frameborder: 0;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);

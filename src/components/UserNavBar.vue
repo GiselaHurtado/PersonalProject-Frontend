@@ -1,18 +1,17 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useAuthStore } from '@/stores/auth'; // Usamos la tienda de autenticación
+import { useAuthStore } from '@/stores/auth'; 
 
 const router = useRouter();
-const authStore = useAuthStore(); // Accedemos a la información de autenticación
+const authStore = useAuthStore(); 
 
-// Nombre del usuario (podríamos obtenerlo de la tienda de autenticación)
-const userName = ref(authStore.userName || 'User'); // Nombre del usuario o "User" por defecto
+const userName = ref(authStore.userName || 'User'); 
 
-// Función para cerrar sesión
+
 const logout = () => {
-  authStore.logout(); // Llamamos a la función de cierre de sesión
-  router.push('/login'); // Redirigimos al login después de cerrar sesión
+  authStore.logout(); 
+  router.push('/login'); 
 };
 </script>
 
@@ -92,7 +91,7 @@ const logout = () => {
   gap: 20px;
 }
 
-/* Estilos del saludo y botón */
+
 .user-section {
   display: flex;
   align-items: center;
@@ -117,13 +116,14 @@ const logout = () => {
   color: #fff;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-right: 40px;
 }
 
 .auth-button:hover {
   background-color: #333;
 }
 
-/* Responsivo: ajustes para pantallas pequeñas */
+
 @media (max-width: 768px) {
   .navbar {
     flex-direction: column;

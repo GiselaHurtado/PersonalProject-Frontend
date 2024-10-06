@@ -43,10 +43,11 @@ onMounted(() => {
   width: 100%;
   max-width: 800px;
   margin-bottom: 0px;
+  margin-top: 100px;
 }
 
 .image-container img {
-  width: 100%;
+  width: 120%;
   height: 100%;
   object-fit: cover;
 }
@@ -54,9 +55,12 @@ onMounted(() => {
 .overlay-text {
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 100%;
   transform: translate(-50%, -50%);
-  color: #ffffff;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 18px;
+  font-weight: 300;
+  color: antiquewhite;
   text-align: center;
   background-color: rgba(0, 0, 0, 0.5);
   padding: 20px;
@@ -64,8 +68,11 @@ onMounted(() => {
 }
 
 .overlay-text h1 {
-  font-size: 36px;
+  font-size: 45px;
   font-weight: bold;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 300;
+  color: antiquewhite;
 }
 
 .overlay-text p {
