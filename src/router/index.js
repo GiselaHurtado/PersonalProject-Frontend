@@ -40,7 +40,7 @@ router.beforeEach((to, from, next) => {
       next();
     }
   } else {
-    next(); // Permitir navegación si no requiere autenticación
+    next(); 
   }
 });
 
